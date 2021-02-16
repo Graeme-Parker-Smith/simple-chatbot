@@ -7,7 +7,9 @@ require('dotenv').config();
 app.use(express.json());
 
 // 2. Import route for api
-// To Do
+const watsonRoutes = require('./routes/api/watson');
+// 2.1 Direct requests to /api/watson to Watson Routes
+app.use('/api/watson', watsonRoutes);
 
 // 3. Start server
 const port = process.env.PORT || 5000;

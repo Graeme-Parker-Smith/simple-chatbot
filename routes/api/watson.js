@@ -24,7 +24,7 @@ router.get('/session', async (req, res) => {
 	// if success
 	try {
 		const session = await assistant.createSession({
-			assistantId: process.env.WATSON_ASSISTANT_ID,
+			assistantId: process.env.WATSON_ASSISTANT_id,
 		});
 		res.json(session['result']);
 		// if fail
@@ -35,6 +35,29 @@ router.get('/session', async (req, res) => {
 });
 
 // 4. Handle Messages
+// Post /api/watson/message
+router.post('/message', async (req, res) => {
+	// Construct payload
+	payload = {
+		assistantId: process.env.WATSON_ASSISTANT_ID,
+		sessionId: req.headers.session_id,
+		input: {
+			message_type: 'text',
+			text: req.body.input,
+		},
+	};
+
+	// If Success
+	try {
+		const message = await assistant.message(payload);
+		res.json(message['result']);
+
+		// If fail
+	} catch (err) {
+		res.send('There was an error processing your request.');
+		console.log(err);
+	}
+});
 
 // 5. Export routes
 module.exports = router;
